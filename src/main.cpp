@@ -17,6 +17,8 @@
 #define BLINK_ON_TIME   500
 #define BLINK_OFF_TIME  1000
 
+#define LED 28
+
 /* Dimensions of the buffer that the task being created will use as its stack.
   NOTE:  This is the number of words the stack will hold, not the number of
   bytes.  For example, if each stack item is 32-bits, and this is set to 100,
@@ -43,7 +45,7 @@ void led_OFF(void *pvParameters);
 
 void setup() {
   SERIAL_PORT.begin(115200);
-  pinMode(LED_BUILTIN, OUTPUT);
+  pinMode(LED, OUTPUT);
 
   /* Create a mutex semaphore without using any dynamic memory
     allocation.  The mutex's data structures will be saved into
@@ -70,7 +72,7 @@ void led_ON(void *pvParameters)
   {
     xSemaphoreTake( xSemaphore, ( TickType_t ) portMAX_DELAY );
     SERIAL_PORT.println("LED ON!");
-    digitalWrite(LED_BUILTIN, HIGH);
+    digitalWrite(LED, HIGH);
     delay(BLINK_ON_TIME);
     xSemaphoreGive( xSemaphore );
     delay(1);
@@ -85,7 +87,7 @@ void led_OFF(void *pvParameters)
   {
     xSemaphoreTake( xSemaphore, ( TickType_t ) portMAX_DELAY );
     SERIAL_PORT.println("LED OFF!");
-    digitalWrite(LED_BUILTIN, LOW);
+    digitalWrite(LED, LOW);
     delay(BLINK_OFF_TIME);
     xSemaphoreGive( xSemaphore );
     delay(1);
